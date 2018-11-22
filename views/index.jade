@@ -1,0 +1,26 @@
+html 
+	head
+		title= title
+		link(rel='stylesheet', href='bootstrap-3.3.7-dist/css/bootstrap.min.css')
+		link(rel='stylesheet', href='bootstrap-3.3.7-dist/css/bootstrap-theme.min.css')
+		
+	body
+		.navbar.navbar-fixed-top('navigation')
+			.container-fluid
+				.nav.navbar-right
+					form(method='get', action='/login', id='login')
+						input(class='btn navbar-btn', value='login', type='submit')
+		div(style='margin-top:10%;')
+			img(src='/logo.png' style='display:block; margin-left:auto; margin-right:auto')
+			br
+			br
+			br
+			.container
+				.col-md-2
+				.col-md-8
+					form(method='get', action='/search', id='search')
+						.col-md-10
+							input.form-control(id='search_text', name='search_text', placeholder='Search by City Name or Zip Code')
+						.col-md-2
+							input.form-control(class='btn-info' type='submit' value='Search')
+				.col-md-2
