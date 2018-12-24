@@ -2,7 +2,7 @@ import mongodb_client
 
 db = mongodb_client.getDB()
 
-#"test" is table name
-db.test.insert({"name" : "chenxili"})
+db.test.insert({"test123" : "123"})
 
-print list(db.test.find({"name": "chenxili"}))
+print list(db.test.find({"test123": "123"}))
+

@@ -1,48 +1,60 @@
-# import os and sys for find the files outside the current folder
-import os
-import sys
-# pyjsonrpc as the backend server
-import pyjsonrpc
-
-# translate bson to string -> then string to json (since data stored in mongodb as bson format)
 import json
+import os
+import pyjsonrpc
+import re
+import sys
+
 from bson.json_util import dumps
 
-# import mongodb_client for db connection/read/write
+# import common package in parent directory
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'common'))
+
 import mongodb_client
 
 SERVER_HOST = 'localhost'
 SERVER_PORT = 4040
-PROPERTY_TABLE_NAME = 'properties'
+
+PROPERTY_TABLE_NAME = 'property'
 
 class RequestHandler(pyjsonrpc.HttpRequestHandler):
     """Test method"""
     @pyjsonrpc.rpcmethod
     def add(self, a, b):
-        print "add gets called with %d and %d" % (a, b)
-        return a + b
+        print "add() get called with %d and %d" % (a, b)
+        return operations.add(a, b)
 
-    """First method used to take user input of zipcode or cityname"""
+    """Search a property with specific address and citystatezip"""
     @pyjsonrpc.rpcmethod
-    def searchArea(self, query):
-    	res = []
-    	# if query is pure digits, user's input is zipcode, query the database
-    	if query.isdigit():
-    		db = mongodb_client.getDB()
-    		res = db[PROPERTY_TABLE_NAME].find({'zipcode':query})
-    		res = json.loads(dumps(res))
+    def searchByAddress(self, address, citystatezip):
+        print "searchByAddress() gets called with address=[%s] and citystatezip=[%s]" % (address, citystatezip)
+        return operations.searchByAddress(address, citystatezip)
 
-    	# if not pure digits, user's input is cityname
-    	# input format should be "city, state"
-    	else:
-    		city = query.split(',')[0].strip()
-    		state = query.split(',')[1].strip()
-    		# TODO: search DB
-    	return res
+    """Search properties by zip code"""
+    @pyjsonrpc.rpcmethod
+    def searchAreaByZip(self, zipcode):
+        print "searchAreaByZip() gets called with zipcode=[%s]" % str(zipcode)
+        return operations.searchAreaByZip(zipcode)
+
+    """Search properties by city and state"""
+    @pyjsonrpc.rpcmethod
+    def searchAreaByCityState(self, city, state):
+        print "searchAreaByCityState() gets called with city=[%s] and state=[%s]" % (city, state)
+        return operations.searchAreaByCityState(city, state)
+
+    """Search properties"""
+    @pyjsonrpc.rpcmethod
+    def searchArea(self, text):
+        print "search() gets called with text=[%s]" % text
+        return operations.searchArea(text)
+
+    """Retrieve details by zillow property ID (zpid)"""
+    @pyjsonrpc.rpcmethod
+    def getDetailsByZpid(self, zpid):
+        print "getDetailsByZillowId() gets called with zpid=[%s]" % (zpid)
+        return operations.getDetailsByZpid(zpid)
 
 
-
+# Threading HTTP-Server
 http_server = pyjsonrpc.ThreadingHttpServer(
     server_address = (SERVER_HOST, SERVER_PORT),
     RequestHandlerClass = RequestHandler

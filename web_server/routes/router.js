@@ -4,7 +4,6 @@ var session = require('client-sessions');
 var User = require('../model/user');
 var rpc_client = require('../rpc_client/rpc_client');
 var router = express.Router();
-var rpc_client = require('../rpc_client/rpc_client')
 
 TITLE = 'Smart Zillow';
 
@@ -14,46 +13,29 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: TITLE, logged_in_user: user });
 });
 
-router.get('/search', function(req, res, next){
+router.get('/search', function(req, res, next) {
   var query = req.query.search_text;
   console.log("search text: " + query)
-  rpc_client.searchArea(query, function(response){
-    if(response == undefined || response === null){
-      console.log('No Result!')
-    }else{
-      res.render('search_result', {
-        title: TITLE,
-        query: query,
-        result: response,
-      })
+
+  rpc_client.searchArea(query, function(response) {
+    results = [];
+    if (response == undefined || response === null) {
+      console.log("No results found");
+    } else {
+      results = response;
     }
+
+    // Add thousands separators for numbers.
+    addThousandSeparatorForSearchResult(results)
+
+    res.render('search_result', {
+      title: TITLE,
+      query: query,
+      results: results
+    });
+
   });
-})
-
-// router.get('/search', function(req, res, next) {
-//   var query = req.query.search_text;
-//   console.log("search text: " + query)
-
-
-//   rpc_client.searchArea(query, function(response) {
-//     results = [];
-//     if (response == undefined || response === null) {
-//       console.log("No results found");
-//     } else {
-//       results = response;
-//     }
-
-//     // Add thousands separators for numbers.
-//     addThousandSeparatorForSearchResult(results)
-
-//     res.render('search_result', {
-//       title: TITLE,
-//       query: query,
-//       results: results
-//     });
-
-//   });
-// });
+});
 
 /* Login page */
 router.get('/login', function(req, res, next) {
