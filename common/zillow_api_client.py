@@ -12,7 +12,7 @@ GET_UPDATED_PROPERTY_DETAILS_API_NAME = 'GetUpdatedPropertyDetails.htm'
 GET_COMPS_API_NAME = 'GetComps.htm'
 
 ### REPLACE ZWS_ID WITH YOUR OWN ###
-ZWS_ID = 'X1-ZWz1gt5yfh0he3_5m9vn'
+ZWS_ID = ''
 
 def build_url(api_name):
     return '%s/%s' % (ZILLOW_ENDPOINT.strip('/'), api_name.strip('/'))

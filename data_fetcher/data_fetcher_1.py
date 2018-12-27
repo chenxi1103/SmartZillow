@@ -12,7 +12,7 @@ from cloudAMQP_client import CloudAMQPClient
 
 # RabbitMQ config
 ### REPLACE CLOUD_AMQP_URL WITH YOUR OWN ###
-CLOUD_AMQP_URL = '''amqp://ilrxmxve:Noyvd180oSB69hwc8dSgT_hEKJ1tkA3U@barnacle.rmq.cloudamqp.com/ilrxmxve'''
+CLOUD_AMQP_URL = ''''''
 DATA_FETCHER_QUEUE_NAME = 'dataFetcherTaskQueue'
 
 # mongodb config
