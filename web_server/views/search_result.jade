@@ -20,10 +20,7 @@ block content
               tr
                 h4 #{result.city}, #{result.state} #{result.zipcode}
               tr
-                if result.is_for_sale == true
-                  h4(style="color: blue;") Listing Price: $#{result.list_price}
-                else
-                  h4(style="color: red;") Not For Sale
+                h4(style="color: blue;") Listing Price: $#{result.list_price}
               tr
                 p #{result.property_type}
               tr
