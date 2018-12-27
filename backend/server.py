@@ -1,20 +1,17 @@
 import json
+import operations
 import os
 import pyjsonrpc
-import re
 import sys
-
-from bson.json_util import dumps
 
 # import common package in parent directory
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'common'))
 
-import mongodb_client
+import zillow_api_client
+import zillow_web_scraper_client
 
 SERVER_HOST = 'localhost'
 SERVER_PORT = 4040
-
-PROPERTY_TABLE_NAME = 'property'
 
 class RequestHandler(pyjsonrpc.HttpRequestHandler):
     """Test method"""
@@ -49,9 +46,9 @@ class RequestHandler(pyjsonrpc.HttpRequestHandler):
 
     """Retrieve details by zillow property ID (zpid)"""
     @pyjsonrpc.rpcmethod
-    def getDetailsByZpid(self, zpid):
-        print "getDetailsByZillowId() gets called with zpid=[%s]" % (zpid)
-        return operations.getDetailsByZpid(zpid)
+    def getDetailsByZpid(self, zpid, get_prediction=False):
+        print "getDetailsByZillowId() gets called with zpid=[%s] and get_prediction=[%s]" % (str(zpid), str(get_prediction))
+        return operations.getDetailsByZpid(zpid, get_prediction)
 
 
 # Threading HTTP-Server
@@ -60,7 +57,7 @@ http_server = pyjsonrpc.ThreadingHttpServer(
     RequestHandlerClass = RequestHandler
 )
 
-print "Starting HTTP server..."
-print "Listening on %s:%d" % (SERVER_HOST, SERVER_PORT)
+print "Starting HTTP server ..."
+print "URL: http://" + str(SERVER_HOST) + ":" + str(SERVER_PORT)
 
 http_server.serve_forever()

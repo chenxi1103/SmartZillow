@@ -11,7 +11,7 @@ var app = express();
 var router = require('./routes/router');
 
 // Connect to database.
-mongoose.connect('mongodb://localhost:27017/real-estate-smart-view');
+mongoose.connect('mongodb://localhost:27017/real_estate_smart_view');
 
 // View engine setup
 app.set('views', path.join(__dirname, 'views'));
